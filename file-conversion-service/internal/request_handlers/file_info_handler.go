@@ -2,6 +2,7 @@ package request_handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -27,6 +28,7 @@ func FileInfoHandler(w http.ResponseWriter, r *http.Request) {
     // Get the file ID from the query string
     fileID := r.URL.Query().Get("file_id")
     if fileID == "" {
+        log.Println("Error: File ID is required")
         http.Error(w, "File ID is required", http.StatusBadRequest)
         return
     }
@@ -34,6 +36,7 @@ func FileInfoHandler(w http.ResponseWriter, r *http.Request) {
     // Construct the file path
     filePath, err := custom_common.FindFileByID(fileID)
     if err != nil {
+        log.Println("Error finding file by ID:", err)
         http.Error(w, err.Error(), http.StatusNotFound)
         return
     }
@@ -41,6 +44,7 @@ func FileInfoHandler(w http.ResponseWriter, r *http.Request) {
     // Get file info
     fileInfo, err := os.Stat(filePath)
     if err != nil {
+        log.Println("Error getting file info:", err)
         http.Error(w, "Error getting file info", http.StatusInternalServerError)
         return
     }
@@ -63,6 +67,7 @@ func FileInfoHandler(w http.ResponseWriter, r *http.Request) {
     // Encode and send the response
     err = json.NewEncoder(w).Encode(response)
     if err != nil {
+        log.Println("Error encoding JSON:", err)
         http.Error(w, "Error encoding JSON", http.StatusInternalServerError)
     }
 }
