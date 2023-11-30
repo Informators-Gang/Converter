@@ -74,9 +74,17 @@ func FindFileByID(fileID string) (string, error) {
 
 func GetConvertibleFormats(extension string) []string {
     switch extension {
-    case ".jpg", ".jpeg", ".png", ".gif":
+    case "jpg", "jpeg", "png", "gif":
         return []string{"pdf", "bmp", "tiff"}
     default:
         return []string{}
     }
+}
+
+func RemoveIDFromFileName(fileName string) string {
+    parts := strings.SplitN(fileName, "_", 2)
+    if len(parts) < 2 {
+        return fileName
+    }
+    return parts[1]
 }

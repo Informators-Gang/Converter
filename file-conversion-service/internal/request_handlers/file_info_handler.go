@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/Informators-Gang/Converter/file-conversion-service/internal/custom_common"
 )
@@ -50,12 +51,12 @@ func FileInfoHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     // Extract extension and determine convertible formats
-    extension := filepath.Ext(fileInfo.Name())
+    extension := strings.TrimPrefix(filepath.Ext(fileInfo.Name()), ".")
     convertibleFormats := custom_common.GetConvertibleFormats(extension)
 
     // Prepare the file info response
     response := FileInfoResponse{
-        Filename:           fileInfo.Name(),
+        Filename:           custom_common.RemoveIDFromFileName(fileInfo.Name()),
         Size:               fileInfo.Size(),
         Extension:          extension,
         ConvertibleFormats: convertibleFormats,
