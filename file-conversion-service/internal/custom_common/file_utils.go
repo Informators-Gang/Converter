@@ -99,7 +99,7 @@ func RemoveIDFromFileName(fileName string) string {
     return parts[1]
 }
 
-func getOriginalFilenameByID(fileID string) (string, error) {
+func GetOriginalFilenameByID(fileID string) (string, error) {
     filePath, err := FindFileByID(fileID)
     if err != nil {
         return "", err
@@ -139,7 +139,7 @@ func ConvertFile(fileID, convertTo string) (string, error) {
     }
 
     // Generate a new unique ID for the converted file
-    originalFilename, err := getOriginalFilenameByID(fileID)
+    originalFilename, err := GetOriginalFilenameByID(fileID)
     if err != nil {
         return "", err
     }
