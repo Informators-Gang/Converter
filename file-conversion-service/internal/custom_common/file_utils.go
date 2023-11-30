@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const UPLOAD_PATH = "./tmp/file-converter/uploads"
+const UPLOAD_PATH = "/tmp/file-converter/uploads"
 const MAX_UPLOAD_SIZE = 10 << 20 // 10 MB
 const FILE_RETENTION_DURATION_IN_HOURS = 4
 const FILE_RETENTION_DURATION = FILE_RETENTION_DURATION_IN_HOURS * time.Hour
@@ -28,6 +28,7 @@ func IsAllowedFileType(fileName string) bool {
 }
 
 func StartFileCleaner() {
+    deleteOldFiles()
     for {
         time.Sleep(FILE_RETENTION_DURATION)
         deleteOldFiles()
