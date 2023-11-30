@@ -56,3 +56,27 @@ func deleteOldFiles() {
         }
     }
 }
+
+func FindFileByID(fileID string) (string, error) {
+    files, err := os.ReadDir(UPLOAD_PATH)
+    if err != nil {
+        return "", err
+    }
+
+    for _, file := range files {
+        if strings.HasPrefix(file.Name(), fileID+"_") {
+            return filepath.Join(UPLOAD_PATH, file.Name()), nil
+        }
+    }
+
+    return "", fmt.Errorf("file not found")
+}
+
+func GetConvertibleFormats(extension string) []string {
+    switch extension {
+    case ".jpg", ".jpeg", ".png", ".gif":
+        return []string{"pdf", "bmp", "tiff"}
+    default:
+        return []string{}
+    }
+}

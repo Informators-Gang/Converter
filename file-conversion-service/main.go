@@ -17,6 +17,8 @@ func main() {
 
     http.HandleFunc("/upload", request_handlers.HandleFileUpload)
     http.HandleFunc("/convert", request_handlers.HandleConversionRequest)
+    http.HandleFunc("/fileinfo", request_handlers.FileInfoHandler)
+
 
     // Start the file cleaner
     go custom_common.StartFileCleaner()
