@@ -1,4 +1,4 @@
-package common
+package custom_common
 
 import (
 	"fmt"
@@ -9,12 +9,12 @@ import (
 	"time"
 )
 
-const uploadPath = "./tmp/file-converter/uploads"
-const maxUploadSize = 10 << 20 // 10 MB
-const fileRetentionDurationInHours = 4
-const fileRetentionDuration = fileRetentionDurationInHours * time.Hour
+const UPLOAD_PATH = "./tmp/file-converter/uploads"
+const MAX_UPLOAD_SIZE = 10 << 20 // 10 MB
+const FILE_RETENTION_DURATION_IN_HOURS = 4
+const FILE_RETENTION_DURATION = FILE_RETENTION_DURATION_IN_HOURS * time.Hour
 
-func isAllowedFileType(fileName string) bool {
+func IsAllowedFileType(fileName string) bool {
     allowedFileTypes := map[string]bool{
         "image/jpeg": true,
         "image/png":  true,
@@ -27,29 +27,29 @@ func isAllowedFileType(fileName string) bool {
     return allowedFileTypes[mimeType]
 }
 
-func startFileCleaner() {
+func StartFileCleaner() {
     for {
-        time.Sleep(fileRetentionDuration)
+        time.Sleep(FILE_RETENTION_DURATION)
         deleteOldFiles()
     }
 }
 
 func deleteOldFiles() {
-    files, err := os.ReadDir(uploadPath)
+    files, err := os.ReadDir(UPLOAD_PATH)
     if err != nil {
         fmt.Println("Error reading directory:", err)
         return
     }
 
     for _, file := range files {
-        filePath := filepath.Join(uploadPath, file.Name())
+        filePath := filepath.Join(UPLOAD_PATH, file.Name())
         fileInfo, err := os.Stat(filePath)
         if err != nil {
             fmt.Println("Error stating file:", err)
             continue
         }
 
-        if time.Since(fileInfo.ModTime()) > fileRetentionDuration {
+        if time.Since(fileInfo.ModTime()) > FILE_RETENTION_DURATION {
             os.Remove(filePath)
             fmt.Println("Deleted old file:", filePath)
         }
