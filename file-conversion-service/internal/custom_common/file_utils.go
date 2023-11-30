@@ -99,6 +99,25 @@ func RemoveIDFromFileName(fileName string) string {
     return parts[1]
 }
 
+func getOriginalFilenameByID(fileID string) (string, error) {
+    filePath, err := FindFileByID(fileID)
+    if err != nil {
+        return "", err
+    }
+
+    // Extract the filename from the full file path
+    filenameWithID := filepath.Base(filePath)
+
+    // Assuming the filename format is "ID_originalfilename.ext"
+    parts := strings.SplitN(filenameWithID, "_", 2)
+    if len(parts) < 2 {
+        return "", fmt.Errorf("invalid filename format")
+    }
+
+    // The original filename is the second part of the split
+    return parts[1], nil
+}
+
 func ConvertFile(fileID, convertTo string) (string, error) {
     // Find the original file by ID
     originalFilePath, err := FindFileByID(fileID)
@@ -120,8 +139,13 @@ func ConvertFile(fileID, convertTo string) (string, error) {
     }
 
     // Generate a new unique ID for the converted file
+    originalFilename, err := getOriginalFilenameByID(fileID)
+    if err != nil {
+        return "", err
+    }
+
     newFileID := uuid.New().String()
-    newFileName := newFileID + "." + convertTo
+    newFileName := newFileID + "-" + originalFilename + "." + convertTo
     newFilePath := filepath.Join(UPLOAD_PATH, newFileName)
 
     // Create the new file
