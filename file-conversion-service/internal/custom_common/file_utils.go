@@ -107,9 +107,10 @@ func GetOriginalFilenameByID(fileID string) (string, error) {
 
     // Extract the filename from the full file path
     filenameWithID := filepath.Base(filePath)
+    filenameWithoutExt := strings.TrimSuffix(filenameWithID, filepath.Ext(filenameWithID))
 
     // Assuming the filename format is "ID_originalfilename.ext"
-    parts := strings.SplitN(filenameWithID, "_", 2)
+    parts := strings.SplitN(filenameWithoutExt, "_", 2)
     if len(parts) < 2 {
         return "", fmt.Errorf("invalid filename format")
     }
@@ -145,7 +146,7 @@ func ConvertFile(fileID, convertTo string) (string, error) {
     }
 
     newFileID := uuid.New().String()
-    newFileName := newFileID + "-" + originalFilename + "." + convertTo
+    newFileName := newFileID + "_" + originalFilename + "." + convertTo
     newFilePath := filepath.Join(UPLOAD_PATH, newFileName)
 
     // Create the new file
