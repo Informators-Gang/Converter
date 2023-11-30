@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type Response struct {
+type FileUploadingResponse struct {
 	FileID  string `json:"file_id"`
 }
 
@@ -65,7 +65,7 @@ func HandleFileUpload(w http.ResponseWriter, r *http.Request) {
         return
     }
 	
-	res := Response{
+	res := FileUploadingResponse{
 		FileID:  uniqueID,
 	}
 	
