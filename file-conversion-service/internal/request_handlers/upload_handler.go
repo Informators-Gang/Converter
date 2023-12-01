@@ -42,14 +42,6 @@ func FileUploadingHandler(w http.ResponseWriter, r *http.Request) {
     newFileName := uniqueID + "_" + filepath.Clean(originalFileName)
     filePath := filepath.Join(custom_common.UPLOAD_PATH, newFileName)
 
-	if _, err := os.Stat(custom_common.UPLOAD_PATH); os.IsNotExist(err) {
-		log.Printf("Folder %s does not exist. Creating...", custom_common.UPLOAD_PATH)
-		err := os.MkdirAll(custom_common.UPLOAD_PATH, 0755)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
     dst, err := os.Create(filePath)
     if err != nil {
         http.Error(w, "Failed to save file", http.StatusInternalServerError)

@@ -24,4 +24,4 @@ COPY --from=builder /go/bin/app /app
 EXPOSE 5353
 
 # Run the binary when the container starts
-CMD ["/app --port 5353"]
+CMD ["/app", "--port", "5353"]
