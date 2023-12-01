@@ -35,6 +35,8 @@ func FileInfoHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    log.Printf("Retrieving info for file with ID %s\n", fileID)
+
     // Construct the file path
     filePath, err := custom_common.FindFileByID(fileID)
     if err != nil {
@@ -50,6 +52,8 @@ func FileInfoHandler(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Error getting file info", http.StatusInternalServerError)
         return
     }
+
+    log.Printf("File info retrieved successfully for file with ID %s\n", fileID)
 
     // Extract extension and determine convertible formats
     extension := strings.TrimPrefix(filepath.Ext(fileInfo.Name()), ".")

@@ -27,12 +27,16 @@ func ConversionHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    log.Printf("Converting file with ID %s to format %s\n", fileID, convertTo)
+
     newFileID, conversionErr := custom_common.ConvertFile(fileID, convertTo)
     if conversionErr != nil {
         log.Println("Error converting file:", conversionErr)
         http.Error(w, conversionErr.Error(), http.StatusInternalServerError)
         return
     }
+
+    log.Printf("File converted successfully, new file ID: %s\n", newFileID)
 
     response := ConvertFileResponse{
         NewFileID: newFileID,
