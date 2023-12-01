@@ -1,5 +1,5 @@
-# Use an official Go runtime as a parent image
-FROM golang:1.21.3
+# Start from a Go base image
+FROM golang:1.21.3 as builder
 
 # Set the working directory inside the container
 WORKDIR /go/src/app
@@ -7,14 +7,21 @@ WORKDIR /go/src/app
 # Copy the local package files to the container's workspace
 COPY . .
 
-# Download and install any required third party dependencies
+# Download and install any required third-party dependencies
 RUN go get -d -v ./...
 
 # Build the application inside the container
-RUN go install -v ./...
+# -o /go/bin/app ensures the binary is named 'app' and placed in /go/bin which is in $PATH
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o /go/bin/app ./...
 
-# Make port 8080 available to the world outside this container
-EXPOSE 8000
+# Use a small base image to run the application
+FROM alpine:latest
 
-# Run the executable when the container starts
-CMD ["app"]
+# Copy the binary from the builder stage
+COPY --from=builder /go/bin/app /app
+
+# This container exposes port 5353 to the outside world
+EXPOSE 5353
+
+# Run the binary when the container starts
+CMD ["/app --port 5353"]
