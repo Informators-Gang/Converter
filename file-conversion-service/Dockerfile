@@ -11,8 +11,8 @@ COPY . .
 RUN go get -d -v ./...
 
 # Build the application inside the container
-# -o /go/bin/app ensures the binary is named 'app' and placed in /go/bin which is in $PATH
-RUN CGO_ENABLED=0 GOOS=linux go build -v -o /go/bin/app ./...
+# Assuming your main package is in the root directory
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o /go/bin/app
 
 # Use a small base image to run the application
 FROM alpine:latest
