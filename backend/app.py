@@ -1,9 +1,9 @@
 from aiohttp import web
-# from .views import handle_upload
+from .views import handle_upload
 
 
 app = web.Application()
-# app.router.add_post('/upload', handle_upload)
+app.router.add_post('/upload', handle_upload)
 
 
 if __name__ == "__main__":
