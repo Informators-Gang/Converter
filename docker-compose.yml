@@ -1,0 +1,26 @@
+version: '3'
+
+networks:
+  mynetwork:
+    driver: bridge
+
+services:
+  backend:
+    build:
+      dockerfile: ./backend/Dockerfile
+      context: .
+    networks:
+      - mynetwork
+    environment:
+      - CONVERTER_SERVICE=http://conversion-service:5353
+    ports:
+      - "8080:8080"
+
+  conversion-service:
+    build:
+      dockerfile: ./file-conversion-service/Dockerfile
+      context: .
+    networks:
+      - mynetwork
+    ports:
+      - "5353:5353"
