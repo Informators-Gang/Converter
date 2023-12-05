@@ -23,6 +23,15 @@ const Main = () => {
          .catch((err) => alert("File Upload Error: " + err));
    };
 
+   const onDownloadClick = () => {
+      const fileUrl = URL.createObjectURL(resultFile.file); 
+
+      let alink = document.createElement('a')
+      alink.href = fileUrl
+      alink.download = resultFile.filename
+      alink.click()
+   }
+
    return (
       <div className="upload-container">
          <h1 className="title">Files Converter</h1>
@@ -51,7 +60,7 @@ const Main = () => {
             </div>
 
             <div className="download-cont">
-               <button className="btn-download">
+               <button onClick={onDownloadClick} className="btn-download">
                   Download PDF
                </button>
             </div>
