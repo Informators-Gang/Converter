@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Informators-Gang/Converter/file-conversion-service/internal/custom_common"
 	"github.com/Informators-Gang/Converter/file-conversion-service/internal/request_handlers"
 )
 
@@ -16,6 +17,9 @@ func main() {
 
     http.HandleFunc("/upload", request_handlers.HandleFileUpload)
     http.HandleFunc("/convert", request_handlers.HandleConversionRequest)
+
+    // Start the file cleaner
+    go custom_common.StartFileCleaner()
 
     addr := fmt.Sprintf(":%d", *port)
     log.Printf("Starting server on %s\n", addr)
