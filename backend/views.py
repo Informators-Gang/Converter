@@ -41,7 +41,8 @@ async def convert_file(request):
     converted_file = await download_converted_file(
         f'{converter_service_url}/download', converted_file_id.get('new_file_id')
     )
-    data = FormData()
-    data.add_field('file', converted_file, filename=f'converted_file.{convert_to}')
 
-    return Response(body=data(), headers={})
+    content_type = f'image/{convert_to}'
+    headers = {'Content-Type': content_type, 'Content-Disposition': f'attachment; filename="converted_file.{convert_to}"'}
+
+    return Response(body=converted_file, headers=headers)
