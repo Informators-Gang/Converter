@@ -1,35 +1,22 @@
 version: '3'
 
-networks:
-  mynetwork:
-    driver: bridge
-
 services:
   backend:
-    build:
-      dockerfile: ./backend/Dockerfile
-      context: .
-    networks:
-      - mynetwork
+    image: 090664031164.dkr.ecr.eu-north-1.amazonaws.com/converter-backend:latest
     environment:
       - CONVERTER_SERVICE=http://conversion-service:5353
     ports:
       - "8080:8080"
 
   conversion-service:
-    build:
-      dockerfile: ./file-conversion-service/Dockerfile
-      context: .
-    networks:
-      - mynetwork
+    image: 090664031164.dkr.ecr.eu-north-1.amazonaws.com/convertor-file-conversion:latest
     ports:
       - "5353:5353"
 
   web:
-    build:
-      dockerfile: ./frontend/Dockerfile
-      context: .
-    networks:
-      - mynetwork
+    image: 090664031164.dkr.ecr.eu-north-1.amazonaws.com/converter-frontend:latest
     ports:
-      - 5001:5001
+      - "5001:5001"
+
+
+
