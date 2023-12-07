@@ -5,7 +5,7 @@ FROM golang:1.21.3 as builder
 WORKDIR /go/src/app
 
 # Copy the local package files to the container's workspace
-COPY ./file-conversion-service .
+COPY . .
 
 # Download and install any required third-party dependencies
 RUN go get -d -v ./...
