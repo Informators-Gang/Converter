@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "69ea8c71-6b9a-4ae8-81a5-24f324cf75d8",
+		"name": "Go conversion service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25523728"
+	},
+	"item": [
+		{
+			"name": "File uploading",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/vitaliidemediuk/Downloads/-2147483648_-214812.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/upload",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"upload"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/vitaliidemediuk/Downloads/-2147483648_-214812.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/upload",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"upload"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 30 Nov 2023 14:18:27 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "51"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"file_id\": \"3c6bd14a-3d9f-46aa-9764-dd1db8e768dd\"\n}"
+				}
+			]
+		},
+		{
+			"name": "File info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/file_info?file_id=ca7b4b24-0f4a-4fcd-aa95-c2010d32bd14",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"file_info"
+					],
+					"query": [
+						{
+							"key": "file_id",
+							"value": "ca7b4b24-0f4a-4fcd-aa95-c2010d32bd14"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/file_info?file_id=ca7b4b24-0f4a-4fcd-aa95-c2010d32bd14",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"file_info"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "ca7b4b24-0f4a-4fcd-aa95-c2010d32bd14"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 30 Nov 2023 18:15:13 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "108"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"filename\": \"-2147483648_-214812.jpg\",\n    \"size\": 397455,\n    \"extension\": \"jpg\",\n    \"convertible_formats\": [\n        \"png\",\n        \"tiff\"\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Convert",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/convert?file_id=9bc6d8c9-3413-48ee-87f1-7856558efaad&convert_to=png",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"convert"
+					],
+					"query": [
+						{
+							"key": "file_id",
+							"value": "9bc6d8c9-3413-48ee-87f1-7856558efaad"
+						},
+						{
+							"key": "convert_to",
+							"value": "png"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/convert?file_id=ca7b4b24-0f4a-4fcd-aa95-c2010d32bd14&convert_to=png",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"convert"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "ca7b4b24-0f4a-4fcd-aa95-c2010d32bd14"
+								},
+								{
+									"key": "convert_to",
+									"value": "png"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 30 Nov 2023 18:15:33 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "95"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"new_file_id\": \"16299075-9d78-4ff6-8a22-596a8982a173\"\n}"
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/download?file_id=3e1bb2ce-6ba3-4d51-b1c7-20c2c21f4e21",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"download"
+					],
+					"query": [
+						{
+							"key": "file_id",
+							"value": "3e1bb2ce-6ba3-4d51-b1c7-20c2c21f4e21"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
