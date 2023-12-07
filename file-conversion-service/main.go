@@ -15,8 +15,8 @@ var port = flag.Int("port", 8000, "port to run the server on")
 func main() {
     flag.Parse()
 
-    http.HandleFunc("/upload", request_handlers.HandleFileUpload)
-    http.HandleFunc("/convert", request_handlers.HandleConversionRequest)
+    http.HandleFunc("/upload", request_handlers.FileUploadingHandler)
+    http.HandleFunc("/convert", request_handlers.ConversionHandler)
     http.HandleFunc("/file_info", request_handlers.FileInfoHandler)
 
 

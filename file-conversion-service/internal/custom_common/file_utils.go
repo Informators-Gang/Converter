@@ -2,11 +2,17 @@ package custom_common
 
 import (
 	"fmt"
+	"image"
+	"image/jpeg"
+	"image/png"
 	"mime"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
+	"golang.org/x/image/tiff"
 )
 
 const UPLOAD_PATH = "/tmp/file-converter/uploads"
@@ -74,8 +80,12 @@ func FindFileByID(fileID string) (string, error) {
 
 func GetConvertibleFormats(extension string) []string {
     switch extension {
-    case "jpg", "jpeg", "png", "gif":
-        return []string{"pdf", "bmp", "tiff"}
+    case "jpg", "jpeg":
+        return []string{"png", "tiff"}
+    case "tiff":
+        return []string{"jpg", "png"}
+    case "png":
+        return []string{"jpg", "tiff"}
     default:
         return []string{}
     }
@@ -87,4 +97,64 @@ func RemoveIDFromFileName(fileName string) string {
         return fileName
     }
     return parts[1]
+}
+
+func ConvertFile(fileID, convertTo string) (string, error) {
+    // Find the original file by ID
+    originalFilePath, err := FindFileByID(fileID)
+    if err != nil {
+        return "", err
+    }
+
+    // Open the original file
+    originalFile, err := os.Open(originalFilePath)
+    if err != nil {
+        return "", err
+    }
+    defer originalFile.Close()
+
+    // Decode the original image
+    img, _, err := image.Decode(originalFile)
+    if err != nil {
+        return "", err
+    }
+
+    // Generate a new unique ID for the converted file
+    filePath, err := FindFileByID(fileID)
+    if err != nil {
+        return "", err
+    }
+
+    // Extract the filename from the full file path
+    originalFilenameWithID := RemoveIDFromFileName(filepath.Base(filePath))
+    originalFilenameWithoutExt := strings.TrimSuffix(originalFilenameWithID, filepath.Ext(originalFilenameWithID))
+
+    newFileID := uuid.New().String()
+    newFileName := newFileID + "_" + originalFilenameWithoutExt + "." + convertTo
+    newFilePath := filepath.Join(UPLOAD_PATH, newFileName)
+
+    // Create the new file
+    newFile, err := os.Create(newFilePath)
+    if err != nil {
+        return "", err
+    }
+    defer newFile.Close()
+
+    // Convert and save the new image
+    switch strings.ToLower(convertTo) {
+    case "jpeg", "jpg":
+        err = jpeg.Encode(newFile, img, nil)
+    case "png":
+        err = png.Encode(newFile, img)
+    case "tiff":
+        err = tiff.Encode(newFile, img, nil)
+    default:
+        return "", fmt.Errorf("unsupported conversion format: %s", convertTo)
+    }
+
+    if err != nil {
+        return "", err
+    }
+
+    return newFileID, nil
 }
