@@ -1,7 +1,28 @@
-import {React} from 'react'
+import {React, useState} from 'react'
+import axios from 'axios';
+import Config from '../../Config';
 import './main.css'
 
 const Main = () => {
+
+   const [name, setName] = useState("");
+   const [selectedFile, setSelectedFile] = useState(null);
+   const [resultFile, setResultFile] = useState(null)
+
+   const convertFile = () => {
+      const formData = new FormData();
+      formData.append("filename", name);
+      formData.append("file", selectedFile);
+
+      axios
+         .post(Config.backend_environment + "/convert", formData)
+         .then((res) => {
+            alert("File Upload success");
+            setResultFile(res.data)
+         })
+         .catch((err) => alert("File Upload Error: " + err));
+   };
+
    return (
       <div className="upload-container">
          <h1 className="title">Files Converter</h1>
@@ -16,12 +37,17 @@ const Main = () => {
                <input
                   type="file"
                   id="images"
+                  onChange={(e) => {
+                     let file = e.target.files[0];
+                     setSelectedFile(file);
+                     setName(file.name)
+                  }}
                   required
                />
             </label>
 
             <div className="convert-cont">
-               <button className="convert-btn">Convert files</button>
+               <button className="convert-btn" onClick={convertFile}>Convert files</button>
             </div>
 
             <div className="download-cont">
