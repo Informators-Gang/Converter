@@ -24,3 +24,12 @@ services:
       - mynetwork
     ports:
       - "5353:5353"
+
+  web:
+    build:
+      dockerfile: ./frontend/Dockerfile
+      context: .
+    networks:
+      - mynetwork
+    ports:
+      - 5001:5001
