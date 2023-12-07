@@ -22,6 +22,7 @@ type FileInfoResponse struct {
 func FileInfoHandler(w http.ResponseWriter, r *http.Request) {
     // Check if the request method is GET
     if r.Method != http.MethodGet {
+        log.Println("Error: Only GET method is allowed")
         http.Error(w, "Only GET method is allowed", http.StatusMethodNotAllowed)
         return
     }
